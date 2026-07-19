@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Modern API Request Builder built with HTML, CSS and Vanilla JavaScript."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <title>API Request Builder PRO</title>
+  </head>
+  <body>
+    <div class="background-grid"></div>
+    <div class="background-glow background-glow-one"></div>
+    <div class="background-glow background-glow-two"></div>
+
+    <main class="app-shell">
+      <header class="app-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <span></span>
+          </div>
+
+          <div>
+            <p class="eyebrow">Developer Tool</p>
+            <h1>API Request Builder PRO</h1>
+            <p class="brand-description">
+              Build, send and inspect HTTP requests directly in your browser.
+            </p>
+          </div>
+        </div>
+
+        <div class="header-badge">
+          <span></span>
+          Vanilla JavaScript
+        </div>
+      </header>
+
+      <section class="request-bar card">
+        <div class="method-wrapper">
+          <label for="methodInput">Method</label>
+          <select id="methodInput">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="PATCH">PATCH</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+        </div>
+
+        <div class="url-wrapper">
+          <label for="urlInput">Request URL</label>
+
+          <input
+            type="url"
+            id="urlInput"
+            placeholder="https://jsonplaceholder.typicode.com/posts/1"
+            autocomplete="off"
+          />
+        </div>
+
+        <button id="sendBtn" class="primary-btn" type="button">
+          <span class="send-btn-text">Send Request</span>
+
+          <span class="send-btn-loader"></span>
+        </button>
+      </section>
+
+      <section class="workspace">
+        <article class="request-panel card">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Configuration</p>
+              <h2>Request</h2>
+            </div>
+
+            <button id="resetBtn" class="ghost-btn" type="button">Reset</button>
+          </div>
+
+          <div class="tabs" role="tablist">
+            <button class="tab-btn active" type="button" data-tab="headers">
+              Headers
+              <span id="headersCount">1</span>
+            </button>
+
+            <button class="tab-btn" type="button" data-tab="body">Body</button>
+          </div>
+
+          <div
+            id="headersTab"
+            class="tab-content active"
+            data-content="headers"
+          >
+            <div class="section-heading">
+              <div>
+                <h3>Request Headers</h3>
+
+                <p>Add key-value pairs that will be sent with the request.</p>
+              </div>
+
+              <button id="addHeaderBtn" class="secondary-btn" type="button">
+                + Add Header
+              </button>
+            </div>
+
+            <div class="headers-labels">
+              <span>Header name</span>
+              <span>Header value</span>
+              <span></span>
+            </div>
+
+            <div id="headersList" class="headers-list">
+              <div class="header-row">
+                <input
+                  type="text"
+                  class="header-key"
+                  value="Content-Type"
+                  placeholder="Header name"
+                />
+
+                <input
+                  type="text"
+                  class="header-value"
+                  value="application/json"
+                  placeholder="Header value"
+                />
+
+                <button
+                  class="remove-header-btn"
+                  type="button"
+                  aria-label="Remove header"
+                >
+                  ×
+                </button>
+              </div>
+            </div>
+
+            <div id="headersEmptyState" class="empty-state hidden">
+              <div class="empty-icon">H</div>
+
+              <h3>No headers added</h3>
+
+              <p>Add a header to include additional request information.</p>
+            </div>
+          </div>
+
+          <div id="bodyTab" class="tab-content" data-content="body">
+            <div class="section-heading">
+              <div>
+                <h3>JSON Request Body</h3>
+
+                <p>Available for POST, PUT and PATCH requests.</p>
+              </div>
+
+              <button id="formatBodyBtn" class="secondary-btn" type="button">
+                Format JSON
+              </button>
+            </div>
+
+            <div class="editor-wrapper">
+              <div class="editor-toolbar">
+                <span>JSON</span>
+
+                <span id="bodyStatus" class="editor-status"> Ready </span>
+              </div>
+
+              <textarea
+                id="bodyInput"
+                spellcheck="false"
+                placeholder='{
+  "title": "Frontend Developer",
+  "completed": false
+}'
+              ></textarea>
+            </div>
+
+            <p id="bodyError" class="error-message"></p>
+          </div>
+        </article>
+
+        <article class="response-panel card">
+          <div class="panel-header response-panel-header">
+            <div>
+              <p class="eyebrow">Server Result</p>
+              <h2>Response</h2>
+            </div>
+
+            <button
+              id="copyResponseBtn"
+              class="ghost-btn"
+              type="button"
+              disabled
+            >
+              Copy Response
+            </button>
+          </div>
+
+          <!-- RESPONSE STATS -->
+
+          <div class="response-stats">
+            <div class="stat-card">
+              <span class="stat-label">Status</span>
+
+              <strong id="statusValue" class="status-neutral"> — </strong>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-label">Time</span>
+
+              <strong id="timeValue">— ms</strong>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-label">Size</span>
+
+              <strong id="sizeValue">— KB</strong>
+            </div>
+          </div>
+
+          <!-- RESPONSE OUTPUT -->
+
+          <div class="response-viewer">
+            <div class="editor-toolbar">
+              <span>Response Body</span>
+
+              <button
+                id="formatResponseBtn"
+                class="toolbar-btn"
+                type="button"
+                disabled
+              >
+                Format
+              </button>
+            </div>
+
+            <pre
+              id="responseOutput"
+            ><code>Send a request to display the server response.</code></pre>
+
+            <div id="responseLoading" class="response-loading hidden">
+              <div class="loader-ring"></div>
+
+              <p>Sending request...</p>
+            </div>
+          </div>
+
+          <!-- ERROR BOX -->
+
+          <div id="requestError" class="request-error hidden">
+            <div class="request-error-icon">!</div>
+
+            <div>
+              <strong>Request failed</strong>
+
+              <p id="requestErrorMessage">
+                Something went wrong while sending the request.
+              </p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <footer class="app-footer">
+        <p>Built with HTML, CSS and Vanilla JavaScript.</p>
+
+        <span>API Request Builder PRO</span>
+      </footer>
+    </main>
+  </body>
+</html>
